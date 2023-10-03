@@ -1,0 +1,27 @@
+{% extends 'mailing/base.html' %}
+
+{% block content %}
+<div class="container">
+    <div class="row text-center">
+
+
+        <div class="col-12">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{ object.full_name | title }}</h4>
+                </div>
+                <div class="card-body">
+                    <h1 class="card-title pricing-card-title"> e-mail: {{ object.email }}</h1>
+                    <p>Комментарий: {{ object.comment }}</p>
+                    <a href="{% url 'mailing:update_client' object.pk %}"
+                       class="btn btn-lg btn-block btn-outline-primary">Редактировать</a>
+                    <a href="{% url 'mailing:delete_client' object.pk %}"
+                       class="btn btn-lg btn-block btn-outline-primary">Удалить</a>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'mailing/base.html' %}
+
+
+{% block content %}
+<div class="col-12 mb-5">
+    <a class="btn btn-outline-primary" href="{% url 'mailing:create_mailing' %}">Добавить рассылку</a>
+</div>
+<div class="container">
+    <div class="row text-center">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Статус рассылки</th>
+                <th scope="col">Время начала</th>
+                <th scope="col">Время окончания</th>
+                <th scope="col">Периодичность</th>
+                <th scope="col">Адресаты</th>
+                <th scope="col">Сообщение</th>
+                <th scope="col">link</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            {% for object in object_list %}
+            <tr>
+                <th scope="row">{{ object.pk }}</th>
+                <td>{{ object.get_status_display }}</td>
+                <td>{{ object.start_time }}</td>
+                <td>{{ object.stop_time }}</td>
+                <td>{{ object.get_period_display }}</td>
+                <td>
+                    {% for client in object.mail_to.all %}
+                    {{ client.full_name }} ({{ client.email }}){% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{{ object.message | slice:":100" }}</td>
+                <td><a href="{% url 'mailing:mailing' object.pk %}"
+                       class="btn btn-lg btn-block btn-outline-primary">Открыть</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

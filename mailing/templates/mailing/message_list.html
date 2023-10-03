@@ -1,0 +1,33 @@
+{% extends 'mailing/base.html' %}
+
+
+{% block content %}
+<div class="col-12 mb-5">
+    <a class="btn btn-outline-primary" href="{% url 'mailing:create_message' %}">Создать сообщение</a>
+</div>
+<div class="container">
+    <div class="row text-center">
+        {% for object in object_list %}
+
+        <div class="col-3">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h1 class="my-0 font-weight-normal">Сообщение {{ object.pk }}</h1>
+                </div>
+                <div class="card-body">
+
+                    <p>Тема письма: {{ object.theme }}</p>
+                    <p>Сообщение: {{ object.message | slice:":100" }}</p>
+
+                    <a href="{% url 'mailing:update_message' object.pk %}"
+                       class="btn btn-lg btn-block btn-outline-primary">Редактировать</a>
+                    <a href="{% url 'mailing:message' object.pk %}" class="btn btn-lg btn-block btn-outline-primary">Открыть</a>
+                </div>
+            </div>
+        </div>
+
+        {% endfor %}
+
+    </div>
+</div>
+{% endblock %}

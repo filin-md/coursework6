@@ -134,8 +134,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# AUTH_USER_MODEL = 'users.User'
-# LOGIN_REDIRECT_URL = '/'
+AUTH_USER_MODEL = 'users.User'
+LOGIN_REDIRECT_URL = '/'
 # LOGOUT_REDIRECT_URL = '/'
 
 EMAIL_HOST = os.getenv('EMAIL_HOST')
@@ -147,5 +147,6 @@ EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == True
 
 
 CRONJOBS = [
-    ('* * * * *', 'mailing.cron.mailing_cron')
+    ('*/1 * * * *', 'mailing.cron.send_email_periodically'),
+
 ]

@@ -147,6 +147,6 @@ EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == True
 
 
 CRONJOBS = [
-    ('*/1 * * * *', 'mailing.cron.send_email_periodically'),
+    ('*/1 * * * *', 'mailing.cron.send_mails'),
 
 ]

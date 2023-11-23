@@ -20,7 +20,9 @@ class RegisterView(CreateView):
         new_user = form.save()
         send_mail(
             subject='Поздравляем с регистрацией',
-            message='Вы успешно зарегестрировались',
+            message=f"Вы успешно зарегистрировались. Осталось подтвердить вашу учётную запись"
+                    f"Код подтверждения - {new_user.token}"
+                    f"Перейдите по ссылке и введите его в поле ввода. {reverse_lazy('users:confirmation')}",
             from_email=settings.EMAIL_HOST_USER,
             recipient_list=[new_user.email]
 
@@ -50,3 +52,6 @@ def generate_new_password(request):
     )
 
     return redirect(reverse('home'))
+
+def confirmation(request):
+    request.user.is_active = True

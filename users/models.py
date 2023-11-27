@@ -15,8 +15,8 @@ class User(AbstractUser):
     avatar = models.ImageField(upload_to='users/', verbose_name='аватар', **NULLABLE)
     country = models.CharField(max_length=100, verbose_name='страна')
 
-    is_active = False
-    token = secrets.token_hex(16)
+    is_active = models.BooleanField(verbose_name='статус активации')
+    token = models.CharField(max_length=255, verbose_name='токен')
 
     groups = models.ManyToManyField(Group, verbose_name='groups', blank=True, related_name='mailing_users_groups')
     user_permissions = models.ManyToManyField(Permission, verbose_name='user permissions', blank=True,

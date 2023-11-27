@@ -1,4 +1,6 @@
+import hashlib
 import random
+import secrets
 
 from django.conf import settings
 from django.core.mail import send_mail
@@ -17,14 +19,24 @@ class RegisterView(CreateView):
     success_url = reverse_lazy('users:login')
 
     def form_valid(self, form):
-        new_user = form.save()
+        email = form.cleaned_data.get('email')
+        salt = secrets.token_hex(8) + email
+        token = hashlib.sha256(salt.encode('utf-8')).hexdigest()
+
+        user = form.save(commit=False)
+        user.token = token
+        user.is_active = False
+        user.save()
+
+        url = f'http://127.0.0.1:8000{reverse_lazy('users:verification', args=[token])}'
+
         send_mail(
             subject='Поздравляем с регистрацией',
             message=f"Вы успешно зарегистрировались. Осталось подтвердить вашу учётную запись"
-                    f"Код подтверждения - {new_user.token}"
-                    f"Перейдите по ссылке и введите его в поле ввода. {reverse_lazy('users:confirmation')}",
+                    f"Перейдите по ссылке {url}",
             from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[new_user.email]
+            recipient_list=[new_user.email],
+            fail_silently=False
 
         )
         return super().form_valid(form)
@@ -53,5 +65,9 @@ def generate_new_password(request):
 
     return redirect(reverse('home'))
 
-def confirmation(request):
-    request.user.is_active = True
+def verification_view(request, token):
+    user = User.objects.filter(token=token).first()
+    if user:
+        user.is_active = True
+        user.save()
+        return redirect('users:login')

@@ -7,17 +7,6 @@ from django.conf import settings
 from mailing.models import MailingLog, Mailing
 
 
-# def send_email_periodically():
-#     print(settings.EMAIL_HOST_USER)
-#     mail = send_mail(
-#         'theme',
-#         'body',
-#         settings.EMAIL_HOST_USER,
-#         ['filin.work@ya.ru'],
-#         fail_silently=False,
-#     )
-#     print(mail)
-
 
 def send_email(ms, message_client):
     result = send_mail(

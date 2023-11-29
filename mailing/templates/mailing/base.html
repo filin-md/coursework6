@@ -155,27 +155,18 @@
 
     <main>
         {% block content %}
-
-        <div class="container">
-    <div class="row text-center">
-
-
-        <div class="col-12">
-            <div class="card mb-4 box-shadow">
-                <div class="card-header">
-
-                </div>
-                <div class="card-body">
-
-                </div>
-            </div>
-        </div>
-
-
-    </div>
-</div>
-
         {% endblock %}
+
+        <p>Количество рассылок всего: {{ total_mailings }}</p>
+        <p>Количество активных рассылок: {{ active_mailings }}</p>
+        <p>Количество уникальных клиентов для рассылок: {{ unique_clients }}</p>
+
+        {% for article in random_articles %}
+        <h2>{{ article.title }}</h2>
+        <p>{{ article.text }}</p>
+        {% empty %}
+        <p>Нет доступных статей.</p>
+        {% endfor %}
     </main>
 
     {% include 'mailing/includes/footer.html' %}

@@ -1,7 +1,10 @@
+import random
+
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 
+from blog.models import Article
 from mailing.models import Client, Mailing, Message
 
 
@@ -9,7 +12,19 @@ from mailing.models import Client, Mailing, Message
 
 
 def index(request):
-    return render(request, 'mailing/base.html')
+    all_articles = Article.objects.all()
+    random_articles = random.sample(list(all_articles), min(3, len(all_articles)))
+    total_mailings = Mailing.objects.count()
+    unique_clients = Client.objects.count()
+    active_mailings = Mailing.objects.filter(status=Mailing.STATUS_STARTED).count()
+
+    context = {
+        'random_articles': random_articles,
+        'total_mailings': total_mailings,
+        'active_mailings': active_mailings,
+        'unique_clients': unique_clients,
+    }
+    return render(request, 'mailing/base.html', context)
 
 
 class ClientCreateView(CreateView):
